@@ -104,12 +104,14 @@ class MainWindow(Adw.ApplicationWindow):
     """Main application window."""
     
     def __init__(self, app, config_manager):
-        super().__init__(application=app, title="Faugus Launcher")
+        super().__init__(application=app, title="Gaufus Launcher")
         self.set_default_size(1200, 800)
         
         self.app = app
         self.config_manager = config_manager
         self.toast_overlay = None
+        self.games = {}  # Ініціалізація словника для ігор
+        self.game_buttons = {}  # Ініціалізація словника для кнопок
         
         # Build UI
         self.build_ui()
@@ -118,7 +120,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.load_games()
         
         # Start periodic check for running games
-        GLib.timeout_add_seconds(1, self.check_running)
+        GLib.timeout_add_seconds(1, self.check_running())
         
     def build_ui(self):
         """Build the main UI layout."""
