@@ -4,14 +4,14 @@ import gi
 gi.require_version('Adw', '1')
 from gi.repository import Adw, Gtk, Gdk, GLib, Gio
 
-class SettingsWindow(Adw.PreferencesDialog):
+class SettingsWindow(Adw.PreferencesWindow):
     """Modern settings dialog using Libadwaita preferences system."""
     
     def __init__(self, parent, config_manager):
         super().__init__()
         self.set_title("Settings")
         self.set_modal(True)
-        self.set_search_enabled(True)
+        self.set_searchable(True)
         
         self.parent = parent
         self.config_manager = config_manager
