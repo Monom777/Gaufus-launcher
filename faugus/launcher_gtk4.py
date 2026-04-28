@@ -228,10 +228,11 @@ class MainWindow(Adw.ApplicationWindow):
             with open(games_json, "r", encoding="utf-8") as f:
                 games_data = json.load(f)
                 
-            self.games.clear()
+            self.games = {}  # Reset dictionary
             for game_data in games_data:
+                game_id = game_data.get("gameid", "")
                 game = Game(
-                    gameid=game_data.get("gameid", ""),
+                    gameid=game_id,
                     title=game_data.get("title", ""),
                     path=game_data.get("path", ""),
                     prefix=game_data.get("prefix", ""),
@@ -240,10 +241,11 @@ class MainWindow(Adw.ApplicationWindow):
                     hidden=game_data.get("hidden", False),
                     playtime=game_data.get("playtime", 0)
                 )
-                self.games.append(game)
+                self.games[game_id] = game
                 
             # Sort games by title
-            self.games.sort(key=lambda x: x.title.lower())
+            sorted_games = sorted(self.games.values(), key=lambda x: x.title.lower())
+            self.games = {g.gameid: g for g in sorted_games}
             
             # Update UI
             self.update_games_list()
@@ -267,7 +269,7 @@ class MainWindow(Adw.ApplicationWindow):
             return
             
         # Add games to FlowBox
-        for game in self.games:
+        for game_id, game in self.games.items():
             widget = self.create_game_widget(game)
             self.flowbox.append(widget)
             
